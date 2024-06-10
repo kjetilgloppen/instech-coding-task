@@ -15,14 +15,10 @@ builder.Services
     });
 
 builder.Services.AddDbContext<AuditContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDbContext<ClaimsContext>(
-    options =>
-    {
-        var client = new MongoClient(builder.Configuration.GetConnectionString("MongoDb"));
-        var database = client.GetDatabase(builder.Configuration["MongoDb:DatabaseName"]);
-        options.UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName);
-    }
-);
+
+var client = new MongoClient(builder.Configuration.GetConnectionString("MongoDb"));
+var database = client.GetDatabase(builder.Configuration["MongoDb:DatabaseName"]);
+builder.Services.AddDbContext<ClaimsContext>(options => options.UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
