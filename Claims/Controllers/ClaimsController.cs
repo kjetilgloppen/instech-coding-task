@@ -42,7 +42,7 @@ public class ClaimsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<Claim> GetAsync(string id)
+    public async Task<Claim?> GetAsync(string id)
     {
         return await _claimsContext.GetClaimAsync(id);
     }

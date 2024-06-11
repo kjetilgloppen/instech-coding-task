@@ -25,7 +25,7 @@ public class ClaimsContext : DbContext
         return await Claims.ToListAsync();
     }
 
-    public async Task<Claim> GetClaimAsync(string id)
+    public async Task<Claim?> GetClaimAsync(string id)
     {
         return await Claims
             .Where(claim => claim.Id == id)
