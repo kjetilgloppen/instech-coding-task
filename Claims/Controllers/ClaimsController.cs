@@ -1,7 +1,6 @@
 using Claims.Auditing;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Claims.Controllers;
 
 [ApiController]

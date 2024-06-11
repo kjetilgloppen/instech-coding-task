@@ -11,11 +11,11 @@ public class Auditer
 
     public void AuditClaim(string id, string httpRequestType)
     {
-        var claimAudit = new ClaimAudit()
+        var claimAudit = new ClaimAudit
         {
             Created = DateTime.Now,
             HttpRequestType = httpRequestType,
-            ClaimId = id
+            ClaimId = id,
         };
 
         _auditContext.Add(claimAudit);
@@ -24,11 +24,11 @@ public class Auditer
         
     public void AuditCover(string id, string httpRequestType)
     {
-        var coverAudit = new CoverAudit()
+        var coverAudit = new CoverAudit
         {
             Created = DateTime.Now,
             HttpRequestType = httpRequestType,
-            CoverId = id
+            CoverId = id,
         };
 
         _auditContext.Add(coverAudit);
