@@ -19,14 +19,14 @@ public class ClaimsController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<Claim>> GetAsync()
     {
-        return await _claimsContext.GetClaimsAsync();
+        return await _claimsContext.GetAllClaimsAsync();
     }
 
     [HttpPost]
     public async Task<ActionResult> CreateAsync(Claim claim)
     {
         claim.Id = Guid.NewGuid().ToString();
-        await _claimsContext.AddItemAsync(claim);
+        await _claimsContext.AddClaimAsync(claim);
         _auditer.AuditClaim(claim.Id, "POST");
         return Ok(claim);
     }
@@ -35,7 +35,7 @@ public class ClaimsController : ControllerBase
     public async Task DeleteAsync(string id)
     {
         _auditer.AuditClaim(id, "DELETE");
-        await _claimsContext.DeleteItemAsync(id);
+        await _claimsContext.DeleteClaimAsync(id);
     }
 
     [HttpGet("{id}")]

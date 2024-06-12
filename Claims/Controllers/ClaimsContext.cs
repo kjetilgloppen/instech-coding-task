@@ -20,7 +20,7 @@ public class ClaimsContext : DbContext
         modelBuilder.Entity<Cover>().ToCollection("covers");
     }
 
-    public async Task<IEnumerable<Claim>> GetClaimsAsync()
+    public async Task<IEnumerable<Claim>> GetAllClaimsAsync()
     {
         return await Claims.ToListAsync();
     }
@@ -32,13 +32,13 @@ public class ClaimsContext : DbContext
             .SingleOrDefaultAsync();
     }
 
-    public async Task AddItemAsync(Claim item)
+    public async Task AddClaimAsync(Claim item)
     {
         Claims.Add(item);
         await SaveChangesAsync();
     }
 
-    public async Task DeleteItemAsync(string id)
+    public async Task DeleteClaimAsync(string id)
     {
         var claim = await GetClaimAsync(id);
         if (claim is not null)
