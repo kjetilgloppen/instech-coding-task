@@ -7,13 +7,11 @@ namespace Claims.Controllers;
 [Route("[controller]")]
 public class ClaimsController : ControllerBase
 {
-    private readonly ILogger<ClaimsController> _logger;
     private readonly ClaimsContext _claimsContext;
     private readonly Auditer _auditer;
 
-    public ClaimsController(ILogger<ClaimsController> logger, ClaimsContext claimsContext, AuditContext auditContext)
+    public ClaimsController(ClaimsContext claimsContext, AuditContext auditContext)
     {
-        _logger = logger;
         _claimsContext = claimsContext;
         _auditer = new Auditer(auditContext);
     }

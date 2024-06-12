@@ -10,13 +10,11 @@ namespace Claims.Controllers;
 public class CoversController : ControllerBase
 {
     private readonly ClaimsContext _claimsContext;
-    private readonly ILogger<CoversController> _logger;
     private readonly Auditer _auditer;
 
-    public CoversController(ClaimsContext claimsContext, AuditContext auditContext, ILogger<CoversController> logger)
+    public CoversController(ClaimsContext claimsContext, AuditContext auditContext)
     {
         _claimsContext = claimsContext;
-        _logger = logger;
         _auditer = new Auditer(auditContext);
     }
 
