@@ -27,15 +27,15 @@ public class CoversController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Cover>>> GetAsync()
     {
-        var results = await _claimsContext.Covers.ToListAsync();
+        var results = await _claimsContext.GetAllCoversAsync();
         return Ok(results);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Cover>> GetAsync(string id)
     {
-        var results = await _claimsContext.Covers.ToListAsync();
-        return Ok(results.SingleOrDefault(cover => cover.Id == id));
+        var results = await _claimsContext.GetCoverAsync(id);
+        return Ok(results);
     }
 
     [HttpPost]
@@ -43,8 +43,7 @@ public class CoversController : ControllerBase
     {
         cover.Id = Guid.NewGuid().ToString();
         cover.Premium = CoversHelper.ComputePremium(cover.StartDate, cover.EndDate, cover.Type);
-        _claimsContext.Covers.Add(cover);
-        await _claimsContext.SaveChangesAsync();
+        await _claimsContext.AddCoverAsync(cover);
         _auditer.AuditCover(cover.Id, "POST");
         return Ok(cover);
     }
@@ -53,11 +52,6 @@ public class CoversController : ControllerBase
     public async Task DeleteAsync(string id)
     {
         _auditer.AuditCover(id, "DELETE");
-        var cover = await _claimsContext.Covers.Where(cover => cover.Id == id).SingleOrDefaultAsync();
-        if (cover is not null)
-        {
-            _claimsContext.Covers.Remove(cover);
-            await _claimsContext.SaveChangesAsync();
-        }
+        await _claimsContext.DeleteCoverAsync(id);
     }
 }
