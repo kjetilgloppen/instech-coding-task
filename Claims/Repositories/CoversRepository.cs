@@ -28,13 +28,13 @@ public class CoversRepository : ICoversRepository
     {
         cover.Id = Guid.NewGuid().ToString();
         await _context.AddCoverAsync(cover);
-        _auditer.AuditCover(cover.Id, "POST");
+        await _auditer.AuditCover(cover.Id, "POST");
         return cover;
     }
 
     public async Task DeleteAsync(string id)
     {
-        _auditer.AuditCover(id, "DELETE");
+        await _auditer.AuditCover(id, "DELETE");
         await _context.DeleteCoverAsync(id);
     }
 }

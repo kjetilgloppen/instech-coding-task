@@ -28,13 +28,13 @@ public class ClaimsRepository : IClaimsRepository
     {
         claim.Id = Guid.NewGuid().ToString();
         await _context.AddClaimAsync(claim);
-        _auditer.AuditClaim(claim.Id, "POST");
+        await _auditer.AuditClaim(claim.Id, "POST");
         return claim;
     }
 
     public async Task DeleteAsync(string id)
     {
-        _auditer.AuditClaim(id, "DELETE");
+        await _auditer.AuditClaim(id, "DELETE");
         await _context.DeleteClaimAsync(id);
     }
 }
