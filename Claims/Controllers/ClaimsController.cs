@@ -1,4 +1,4 @@
-using Claims.Repositories;
+using Claims.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Claims.Controllers;
@@ -7,35 +7,35 @@ namespace Claims.Controllers;
 [Route("[controller]")]
 public class ClaimsController : ControllerBase
 {
-    private readonly ClaimsRepository _repository;
+    private readonly ClaimsService _service;
 
-    public ClaimsController(ClaimsRepository repository)
+    public ClaimsController(ClaimsService service)
     {
-        _repository = repository;
+        _service = service;
     }
 
     [HttpGet]
     public async Task<IEnumerable<Claim>> GetAsync()
     {
-        return await _repository.GetAllAsync();
+        return await _service.GetAllAsync();
     }
 
     [HttpPost]
     public async Task<ActionResult> CreateAsync(Claim claim)
     {
-        await _repository.CreateAsync(claim);
+        await _service.CreateAsync(claim);
         return Ok(claim);
     }
 
     [HttpDelete("{id}")]
     public async Task DeleteAsync(string id)
     {
-        await _repository.DeleteAsync(id);
+        await _service.DeleteAsync(id);
     }
 
     [HttpGet("{id}")]
     public async Task<Claim?> GetAsync(string id)
     {
-        return await _repository.GetAsync(id);
+        return await _service.GetAsync(id);
     }
 }

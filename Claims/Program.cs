@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Claims.Auditing;
 using Claims.Controllers;
 using Claims.Repositories;
+using Claims.Services;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
@@ -27,6 +28,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ClaimsRepository>();
 builder.Services.AddScoped<CoversRepository>();
+builder.Services.AddScoped<ClaimsService>();
+builder.Services.AddScoped<CoversService>();
 
 var app = builder.Build();
 
