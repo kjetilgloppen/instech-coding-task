@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Claims.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,8 +24,15 @@ public class ClaimsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreateAsync(Claim claim)
     {
-        await _service.CreateAsync(claim);
-        return Ok(claim);
+        try
+        {
+            await _service.CreateAsync(claim);
+            return Ok(claim);
+        }
+        catch (ValidationException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpDelete("{id}")]
