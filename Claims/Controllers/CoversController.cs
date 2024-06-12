@@ -1,7 +1,6 @@
-using Claims.Auditing;
 using Claims.Helpers;
+using Claims.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Claims.Controllers;
 
@@ -9,13 +8,11 @@ namespace Claims.Controllers;
 [Route("[controller]")]
 public class CoversController : ControllerBase
 {
-    private readonly ClaimsContext _claimsContext;
-    private readonly Auditer _auditer;
+    private readonly CoversRepository _repository;
 
-    public CoversController(ClaimsContext claimsContext, AuditContext auditContext)
+    public CoversController(CoversRepository repository)
     {
-        _claimsContext = claimsContext;
-        _auditer = new Auditer(auditContext);
+        _repository = repository;
     }
 
     [HttpPost("compute")]
@@ -27,31 +24,28 @@ public class CoversController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Cover>>> GetAsync()
     {
-        var results = await _claimsContext.GetAllCoversAsync();
+        var results = await _repository.GetAllAsync();
         return Ok(results);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Cover>> GetAsync(string id)
     {
-        var results = await _claimsContext.GetCoverAsync(id);
+        var results = await _repository.GetAsync(id);
         return Ok(results);
     }
 
     [HttpPost]
     public async Task<ActionResult> CreateAsync(Cover cover)
     {
-        cover.Id = Guid.NewGuid().ToString();
         cover.Premium = CoversHelper.ComputePremium(cover.StartDate, cover.EndDate, cover.Type);
-        await _claimsContext.AddCoverAsync(cover);
-        _auditer.AuditCover(cover.Id, "POST");
+        await _repository.CreateAsync(cover);
         return Ok(cover);
     }
 
     [HttpDelete("{id}")]
     public async Task DeleteAsync(string id)
     {
-        _auditer.AuditCover(id, "DELETE");
-        await _claimsContext.DeleteCoverAsync(id);
+        await _repository.DeleteAsync(id);
     }
 }

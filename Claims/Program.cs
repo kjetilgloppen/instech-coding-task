@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Claims.Auditing;
 using Claims.Controllers;
+using Claims.Repositories;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
@@ -23,6 +24,9 @@ builder.Services.AddDbContext<ClaimsContext>(options => options.UseMongoDB(datab
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ClaimsRepository>();
+builder.Services.AddScoped<CoversRepository>();
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-using Claims.Auditing;
+using Claims.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Claims.Controllers;
@@ -7,40 +7,35 @@ namespace Claims.Controllers;
 [Route("[controller]")]
 public class ClaimsController : ControllerBase
 {
-    private readonly ClaimsContext _claimsContext;
-    private readonly Auditer _auditer;
+    private readonly ClaimsRepository _repository;
 
-    public ClaimsController(ClaimsContext claimsContext, AuditContext auditContext)
+    public ClaimsController(ClaimsRepository repository)
     {
-        _claimsContext = claimsContext;
-        _auditer = new Auditer(auditContext);
+        _repository = repository;
     }
 
     [HttpGet]
     public async Task<IEnumerable<Claim>> GetAsync()
     {
-        return await _claimsContext.GetAllClaimsAsync();
+        return await _repository.GetAllAsync();
     }
 
     [HttpPost]
     public async Task<ActionResult> CreateAsync(Claim claim)
     {
-        claim.Id = Guid.NewGuid().ToString();
-        await _claimsContext.AddClaimAsync(claim);
-        _auditer.AuditClaim(claim.Id, "POST");
+        await _repository.CreateAsync(claim);
         return Ok(claim);
     }
 
     [HttpDelete("{id}")]
     public async Task DeleteAsync(string id)
     {
-        _auditer.AuditClaim(id, "DELETE");
-        await _claimsContext.DeleteClaimAsync(id);
+        await _repository.DeleteAsync(id);
     }
 
     [HttpGet("{id}")]
     public async Task<Claim?> GetAsync(string id)
     {
-        return await _claimsContext.GetClaimAsync(id);
+        return await _repository.GetAsync(id);
     }
 }
