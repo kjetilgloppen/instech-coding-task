@@ -22,21 +22,15 @@ public static class CoversHelper
             {
                 totalPremium += premiumPerDay;
             }
-            else if (i < 180 && coverType == CoverType.Yacht)
-            {
-                totalPremium += premiumPerDay - premiumPerDay * 0.05m;
-            }
             else if (i < 180)
             {
-                totalPremium += premiumPerDay - premiumPerDay * 0.02m;
-            }
-            else if (i < 365 && coverType != CoverType.Yacht)
-            {
-                totalPremium += premiumPerDay - premiumPerDay * 0.03m;
+                var discount = coverType == CoverType.Yacht ? 0.05m : 0.02m;
+                totalPremium += premiumPerDay * (1 - discount);
             }
             else if (i < 365)
             {
-                totalPremium += premiumPerDay - premiumPerDay * 0.08m;
+                var discount = coverType == CoverType.Yacht ? 0.05m + 0.03m : 0.02m + 0.01m;
+                totalPremium += premiumPerDay * (1 - discount);
             }
         }
 
