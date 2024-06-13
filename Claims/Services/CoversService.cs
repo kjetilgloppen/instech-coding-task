@@ -1,5 +1,6 @@
 using Claims.Helpers;
 using Claims.Repositories;
+using Claims.Validators;
 
 namespace Claims.Services;
 
@@ -24,6 +25,7 @@ public class CoversService
 
     public async Task<Cover> CreateAsync(Cover cover)
     {
+        CoverValidator.Validate(cover);
         cover.Premium = CoversHelper.ComputePremium(cover.StartDate, cover.EndDate, cover.Type);
         await _coversRepository.CreateAsync(cover);
         return cover;

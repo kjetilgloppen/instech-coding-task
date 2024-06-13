@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Claims.Helpers;
 using Claims.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -38,8 +39,15 @@ public class CoversController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreateAsync(Cover cover)
     {
-        await _service.CreateAsync(cover);
-        return Ok(cover);
+        try
+        {
+            await _service.CreateAsync(cover);
+            return Ok(cover);
+        }
+        catch (ValidationException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpDelete("{id}")]
