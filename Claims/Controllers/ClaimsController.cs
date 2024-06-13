@@ -1,4 +1,4 @@
-using Claims.Auditing;
+using Claims.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Claims.Controllers;
@@ -7,40 +7,35 @@ namespace Claims.Controllers;
 [Route("[controller]")]
 public class ClaimsController : ControllerBase
 {
-    private readonly ClaimsContext _claimsContext;
-    private readonly Auditer _auditer;
+    private readonly ClaimsService _service;
 
-    public ClaimsController(ClaimsContext claimsContext, AuditContext auditContext)
+    public ClaimsController(ClaimsService service)
     {
-        _claimsContext = claimsContext;
-        _auditer = new Auditer(auditContext);
+        _service = service;
     }
 
     [HttpGet]
     public async Task<IEnumerable<Claim>> GetAsync()
     {
-        return await _claimsContext.GetClaimsAsync();
+        return await _service.GetAllAsync();
     }
 
     [HttpPost]
     public async Task<ActionResult> CreateAsync(Claim claim)
     {
-        claim.Id = Guid.NewGuid().ToString();
-        await _claimsContext.AddItemAsync(claim);
-        _auditer.AuditClaim(claim.Id, "POST");
+        await _service.CreateAsync(claim);
         return Ok(claim);
     }
 
     [HttpDelete("{id}")]
     public async Task DeleteAsync(string id)
     {
-        _auditer.AuditClaim(id, "DELETE");
-        await _claimsContext.DeleteItemAsync(id);
+        await _service.DeleteAsync(id);
     }
 
     [HttpGet("{id}")]
     public async Task<Claim?> GetAsync(string id)
     {
-        return await _claimsContext.GetClaimAsync(id);
+        return await _service.GetAsync(id);
     }
 }

@@ -6,7 +6,7 @@ namespace Claims.Controllers;
 public class ClaimsContext : DbContext
 {
     private DbSet<Claim> Claims { get; init; }
-    public DbSet<Cover>  Covers { get; init; }
+    private DbSet<Cover>  Covers { get; init; }
 
     public ClaimsContext(DbContextOptions options)
         : base(options)
@@ -20,7 +20,7 @@ public class ClaimsContext : DbContext
         modelBuilder.Entity<Cover>().ToCollection("covers");
     }
 
-    public async Task<IEnumerable<Claim>> GetClaimsAsync()
+    public async Task<IEnumerable<Claim>> GetAllClaimsAsync()
     {
         return await Claims.ToListAsync();
     }
@@ -32,18 +32,46 @@ public class ClaimsContext : DbContext
             .SingleOrDefaultAsync();
     }
 
-    public async Task AddItemAsync(Claim item)
+    public async Task AddClaimAsync(Claim item)
     {
         Claims.Add(item);
         await SaveChangesAsync();
     }
 
-    public async Task DeleteItemAsync(string id)
+    public async Task DeleteClaimAsync(string id)
     {
         var claim = await GetClaimAsync(id);
         if (claim is not null)
         {
             Claims.Remove(claim);
+            await SaveChangesAsync();
+        }
+    }
+
+    public async Task<IEnumerable<Cover>> GetAllCoversAsync()
+    {
+        return await Covers.ToListAsync();
+    }
+
+    public async Task<Cover?> GetCoverAsync(string id)
+    {
+        return await Covers
+            .Where(cover => cover.Id == id)
+            .SingleOrDefaultAsync();
+    }
+
+    public async Task AddCoverAsync(Cover item)
+    {
+        Covers.Add(item);
+        await SaveChangesAsync();
+    }
+
+    public async Task DeleteCoverAsync(string id)
+    {
+        var cover = await GetCoverAsync(id);
+        if (cover is not null)
+        {
+            Covers.Remove(cover);
             await SaveChangesAsync();
         }
     }
