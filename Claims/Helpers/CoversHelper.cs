@@ -22,8 +22,7 @@ public static class CoversHelper
             {
                 totalPremium += premiumPerDay;
             }
-
-            if (i < 180 && coverType == CoverType.Yacht)
+            else if (i < 180 && coverType == CoverType.Yacht)
             {
                 totalPremium += premiumPerDay - premiumPerDay * 0.05m;
             }
@@ -31,8 +30,7 @@ public static class CoversHelper
             {
                 totalPremium += premiumPerDay - premiumPerDay * 0.02m;
             }
-
-            if (i < 365 && coverType != CoverType.Yacht)
+            else if (i < 365 && coverType != CoverType.Yacht)
             {
                 totalPremium += premiumPerDay - premiumPerDay * 0.03m;
             }
