@@ -4,11 +4,11 @@ using Claims.Validators;
 
 namespace Claims.Services;
 
-public class CoversService
+public class CoversService : ICoversService
 {
-    private readonly CoversRepository _coversRepository;
+    private readonly ICoversRepository _coversRepository;
 
-    public CoversService(CoversRepository coversRepository)
+    public CoversService(ICoversRepository coversRepository)
     {
         _coversRepository = coversRepository;
     }

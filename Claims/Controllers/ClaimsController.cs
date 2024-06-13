@@ -8,9 +8,9 @@ namespace Claims.Controllers;
 [Route("[controller]")]
 public class ClaimsController : ControllerBase
 {
-    private readonly ClaimsService _service;
+    private readonly IClaimsService _service;
 
-    public ClaimsController(ClaimsService service)
+    public ClaimsController(IClaimsService service)
     {
         _service = service;
     }
