@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
@@ -23,7 +24,10 @@ public class ClaimsControllerTests
 
         response.EnsureSuccessStatusCode();
 
-        //TODO: Apart from ensuring 200 OK being returned, what else can be asserted?
+        // Apart from ensuring 200 OK being returned, also assert that we get a result and of correct type
+        var jsonString = await response.Content.ReadAsStringAsync();
+        var claims = JsonSerializer.Deserialize<IEnumerable<Claim>>(jsonString);
+        Assert.IsAssignableFrom<IEnumerable<Claim>>(claims);
     }
 
     [Fact]
