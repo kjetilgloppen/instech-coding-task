@@ -53,11 +53,13 @@ public class ClaimsContext : DbContext
         return await Covers.ToListAsync();
     }
 
-    public async Task<Cover?> GetCoverAsync(string id)
+    public async Task<Cover> GetCoverAsync(string id)
     {
-        return await Covers
+        var cover = await Covers
             .Where(cover => cover.Id == id)
             .SingleOrDefaultAsync();
+
+        return cover ?? throw new KeyNotFoundException("Cover not found");
     }
 
     public async Task AddCoverAsync(Cover item)
@@ -69,10 +71,8 @@ public class ClaimsContext : DbContext
     public async Task DeleteCoverAsync(string id)
     {
         var cover = await GetCoverAsync(id);
-        if (cover is not null)
-        {
-            Covers.Remove(cover);
-            await SaveChangesAsync();
-        }
+
+        Covers.Remove(cover);
+        await SaveChangesAsync();
     }
 }

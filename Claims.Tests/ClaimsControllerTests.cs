@@ -43,7 +43,7 @@ public class ClaimsControllerTests
         };
         var content = JsonContent.Create(badClaim);
         var response = await _client.PostAsync("/Claims", content);
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
     
     [Fact]

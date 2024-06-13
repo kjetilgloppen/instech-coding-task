@@ -33,6 +33,10 @@ public class ClaimsController : ControllerBase
         {
             return BadRequest(e.Message);
         }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     [HttpDelete("{id}")]

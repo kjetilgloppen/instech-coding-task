@@ -32,8 +32,15 @@ public class CoversController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Cover>> GetAsync(string id)
     {
-        var results = await _service.GetAsync(id);
-        return Ok(results);
+        try
+        {
+            var results = await _service.GetAsync(id);
+            return Ok(results);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     [HttpPost]
@@ -51,8 +58,16 @@ public class CoversController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteAsync(string id)
+    public async Task<ActionResult> DeleteAsync(string id)
     {
-        await _service.DeleteAsync(id);
+        try
+        {
+            await _service.DeleteAsync(id);
+            return Ok();
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 }

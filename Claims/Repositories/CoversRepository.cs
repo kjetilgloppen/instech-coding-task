@@ -19,7 +19,7 @@ public class CoversRepository : ICoversRepository
         return await _context.GetAllCoversAsync();
     }
 
-    public async Task<Cover?> GetAsync(string id)
+    public async Task<Cover> GetAsync(string id)
     {
         return await _context.GetCoverAsync(id);
     }
