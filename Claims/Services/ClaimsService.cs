@@ -4,12 +4,12 @@ using Claims.Validators;
 
 namespace Claims.Services;
 
-public class ClaimsService
+public class ClaimsService : IClaimsService
 {
-    private readonly ClaimsRepository _claimsRepository;
-    private readonly CoversRepository _coversRepository;
+    private readonly IClaimsRepository _claimsRepository;
+    private readonly ICoversRepository _coversRepository;
 
-    public ClaimsService(ClaimsRepository claimsRepository, CoversRepository coversRepository)
+    public ClaimsService(IClaimsRepository claimsRepository, ICoversRepository coversRepository)
     {
         _claimsRepository = claimsRepository;
         _coversRepository = coversRepository;

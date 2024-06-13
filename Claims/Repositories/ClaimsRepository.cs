@@ -3,7 +3,7 @@ using Claims.Controllers;
 
 namespace Claims.Repositories;
 
-public class ClaimsRepository
+public class ClaimsRepository : IClaimsRepository
 {
     private readonly ClaimsContext _context;
     private readonly Auditer _auditer;

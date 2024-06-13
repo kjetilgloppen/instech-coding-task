@@ -26,10 +26,10 @@ builder.Services.AddDbContext<ClaimsContext>(options => options.UseMongoDB(datab
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ClaimsRepository>();
-builder.Services.AddScoped<CoversRepository>();
-builder.Services.AddScoped<ClaimsService>();
-builder.Services.AddScoped<CoversService>();
+builder.Services.AddScoped<IClaimsRepository, ClaimsRepository>();
+builder.Services.AddScoped<ICoversRepository, CoversRepository>();
+builder.Services.AddScoped<IClaimsService, ClaimsService>();
+builder.Services.AddScoped<ICoversService, CoversService>();
 
 var app = builder.Build();
 
