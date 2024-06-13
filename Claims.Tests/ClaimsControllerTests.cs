@@ -30,7 +30,7 @@ public class ClaimsControllerTests
     public async Task Get_Claim()
     {
         var response = await _client.GetAsync("/Claims/id");
-        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
     [Fact]

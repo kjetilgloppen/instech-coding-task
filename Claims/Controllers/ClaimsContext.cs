@@ -25,11 +25,13 @@ public class ClaimsContext : DbContext
         return await Claims.ToListAsync();
     }
 
-    public async Task<Claim?> GetClaimAsync(string id)
+    public async Task<Claim> GetClaimAsync(string id)
     {
-        return await Claims
+        var claim = await Claims
             .Where(claim => claim.Id == id)
             .SingleOrDefaultAsync();
+
+        return claim ?? throw new KeyNotFoundException("Claim not found");
     }
 
     public async Task AddClaimAsync(Claim item)
@@ -41,11 +43,9 @@ public class ClaimsContext : DbContext
     public async Task DeleteClaimAsync(string id)
     {
         var claim = await GetClaimAsync(id);
-        if (claim is not null)
-        {
-            Claims.Remove(claim);
-            await SaveChangesAsync();
-        }
+
+        Claims.Remove(claim);
+        await SaveChangesAsync();
     }
 
     public async Task<IEnumerable<Cover>> GetAllCoversAsync()

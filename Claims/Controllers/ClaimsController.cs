@@ -36,14 +36,30 @@ public class ClaimsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteAsync(string id)
+    public async Task<ActionResult> DeleteAsync(string id)
     {
-        await _service.DeleteAsync(id);
+        try
+        {
+            await _service.DeleteAsync(id);
+            return Ok();
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     [HttpGet("{id}")]
-    public async Task<Claim?> GetAsync(string id)
+    public async Task<ActionResult<Claim>> GetAsync(string id)
     {
-        return await _service.GetAsync(id);
+        try
+        {
+            var claim = await _service.GetAsync(id);
+            return Ok(claim);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 }

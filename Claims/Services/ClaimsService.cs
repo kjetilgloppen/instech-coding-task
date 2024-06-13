@@ -20,7 +20,7 @@ public class ClaimsService : IClaimsService
         return await _claimsRepository.GetAllAsync();
     }
 
-    public async Task<Claim?> GetAsync(string id)
+    public async Task<Claim> GetAsync(string id)
     {
         return await _claimsRepository.GetAsync(id);
     }
