@@ -10,4 +10,14 @@ public class AuditContext : DbContext
     public AuditContext(DbContextOptions<AuditContext> options) : base(options)
     {
     }
+
+    public async Task<IEnumerable<ClaimAudit>> GetAllClaimAudits()
+    {
+        return await ClaimAudits.ToListAsync();
+    }
+
+    public async Task<IEnumerable<CoverAudit>> GetAllCoverAudits()
+    {
+        return await CoverAudits.ToListAsync();
+    }
 }
