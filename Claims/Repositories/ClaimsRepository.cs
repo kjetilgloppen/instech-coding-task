@@ -8,10 +8,10 @@ public class ClaimsRepository : IClaimsRepository
     private readonly ClaimsContext _context;
     private readonly Auditer _auditer;
 
-    public ClaimsRepository(ClaimsContext context, AuditContext auditContext)
+    public ClaimsRepository(ClaimsContext context, Auditer auditer)
     {
         _context = context;
-        _auditer = new Auditer(auditContext);
+        _auditer = auditer;
     }
 
     public async Task<IEnumerable<Claim>> GetAllAsync()
@@ -28,13 +28,13 @@ public class ClaimsRepository : IClaimsRepository
     {
         claim.Id = Guid.NewGuid().ToString();
         await _context.AddClaimAsync(claim);
-        await _auditer.AuditClaim(claim.Id, "POST");
+        _auditer.AuditClaim(claim.Id, "POST");
         return claim;
     }
 
     public async Task DeleteAsync(string id)
     {
-        await _auditer.AuditClaim(id, "DELETE");
+        _auditer.AuditClaim(id, "DELETE");
         await _context.DeleteClaimAsync(id);
     }
 }

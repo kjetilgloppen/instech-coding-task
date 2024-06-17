@@ -31,6 +31,8 @@ builder.Services.AddScoped<ICoversRepository, CoversRepository>();
 builder.Services.AddScoped<IClaimsService, ClaimsService>();
 builder.Services.AddScoped<ICoversService, CoversService>();
 
+builder.Services.AddSingleton<Auditer>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

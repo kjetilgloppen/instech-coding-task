@@ -8,10 +8,10 @@ public class CoversRepository : ICoversRepository
     private readonly ClaimsContext _context;
     private readonly Auditer _auditer;
 
-    public CoversRepository(ClaimsContext context, AuditContext auditContext)
+    public CoversRepository(ClaimsContext context, Auditer auditer)
     {
         _context = context;
-        _auditer = new Auditer(auditContext);
+        _auditer = auditer;
     }
 
     public async Task<IEnumerable<Cover>> GetAllAsync()
@@ -28,13 +28,13 @@ public class CoversRepository : ICoversRepository
     {
         cover.Id = Guid.NewGuid().ToString();
         await _context.AddCoverAsync(cover);
-        await _auditer.AuditCover(cover.Id, "POST");
+        _auditer.AuditCover(cover.Id, "POST");
         return cover;
     }
 
     public async Task DeleteAsync(string id)
     {
-        await _auditer.AuditCover(id, "DELETE");
+        _auditer.AuditCover(id, "DELETE");
         await _context.DeleteCoverAsync(id);
     }
 }
